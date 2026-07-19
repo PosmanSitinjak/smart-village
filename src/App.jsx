@@ -163,17 +163,6 @@ const MainAppContent = () => {
               </ul>
             </div>
 
-            {/* Emergency & Services Column */}
-            <div className="footer-links-col">
-              <h4>Layanan Desa</h4>
-              <ul>
-                <li><span className="footer-link-text">Posko Bencana Alam</span></li>
-                <li><span className="footer-link-text">Posyandu Balita & Lansia</span></li>
-                <li><span className="footer-link-text">Aduan Fasilitas Publik</span></li>
-                <li><button type="button" onClick={() => setIsPrivacyModalOpen(true)}>Kebijakan Privasi</button></li>
-              </ul>
-            </div>
-
             {/* Copyright & Info Column */}
             <div className="footer-links-col">
               <h4>Hak Cipta & Info</h4>
