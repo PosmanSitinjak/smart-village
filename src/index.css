@@ -4080,21 +4080,24 @@ body {
   background-color: rgba(15, 23, 42, 0.5);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  padding: 2rem 1rem;
-  z-index: 9999;
+  padding: 1rem;
+  z-index: 25000;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .role-selector-card {
   width: 100%;
   max-width: 460px;
+  margin: auto !important;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: var(--radius-xl);
   padding: 2rem 2.25rem;
   box-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.12);
-  z-index: 10;
+  z-index: 25001;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .selector-brand {
@@ -4516,13 +4519,13 @@ body {
   .role-selector-container {
     align-items: center !important;
     justify-content: center !important;
-    padding: 1rem 0.65rem !important;
+    padding: 0.75rem !important;
     z-index: 25000 !important;
   }
   .role-selector-card {
-    padding: 1.75rem 1.25rem !important;
+    padding: 1.5rem 1.15rem !important;
     margin: auto !important;
-    max-height: 86vh !important;
+    max-height: 90vh !important;
     overflow-y: auto !important;
     z-index: 25001 !important;
   }
