@@ -696,9 +696,79 @@ body {
   width: 100%;
 }
 
-/* GPS Recenter Button: Mobile only */
+/* User GPS Live Beacon Marker (Google Maps Style) */
+.marker-user-live {
+  background: transparent !important;
+  border: none !important;
+}
+
+.user-beacon-container {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-beacon-dot {
+  width: 14px;
+  height: 14px;
+  background-color: #2563eb;
+  border: 2.5px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.5);
+  z-index: 2;
+}
+
+.user-beacon-ring {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-color: rgba(37, 99, 235, 0.25);
+  border-radius: 50%;
+  animation: beaconPulse 2s infinite ease-out;
+  z-index: 1;
+}
+
+@keyframes beaconPulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* Floating GPS Recenter HUD Button */
 .btn-gps-recenter {
-  display: none !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  z-index: 1000;
+  background-color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: 50% !important;
+  width: 44px !important;
+  height: 44px !important;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.2) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.btn-gps-recenter:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.3) !important;
+  background-color: #f8fafc !important;
+}
+
+.btn-gps-recenter:active {
+  transform: scale(0.95) !important;
 }
 
 /* Site Copyright & Standard Web Footer */
