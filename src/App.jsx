@@ -135,7 +135,7 @@ const MainAppContent = () => {
           <footer className="admin-copyright-footer">
             <p>© {new Date().getFullYear()} <strong>@ayamgeprek</strong> • Panel Kontrol Admin SmartVillage</p>
           </footer>
-        ) : (
+        ) : activeTab === 'dashboard' ? (
           <footer className="site-copyright-footer">
             <div className="footer-main-grid">
               {/* Brand Column */}
@@ -190,6 +190,19 @@ const MainAppContent = () => {
                 <button type="button" onClick={() => openAuthModal('login')}>Portal Warga</button>
               </div>
             </div>
+          </footer>
+        ) : (
+          <footer className="admin-copyright-footer">
+            <p>
+              © {new Date().getFullYear()} <strong>@ayamgeprek</strong> • All rights reserved. 
+              <button 
+                type="button" 
+                onClick={() => setIsPrivacyModalOpen(true)}
+                style={{ background: 'none', border: 'none', color: 'var(--emerald)', cursor: 'pointer', fontWeight: 600, marginLeft: '0.4rem' }}
+              >
+                Kebijakan Privasi
+              </button>
+            </p>
           </footer>
         )}
       </main>
