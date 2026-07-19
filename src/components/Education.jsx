@@ -165,11 +165,12 @@ const Education = () => {
           {/* Top Sticky Bar */}
           <div className="article-standalone-bar">
             <button 
-              className="btn btn-secondary btn-sm" 
+              className="btn btn-secondary btn-sm btn-article-back" 
               onClick={() => setSelectedArticle(null)}
-              style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontWeight: 700 }}
             >
-              <ArrowLeft size={16} /> Kembali ke Daftar Artikel
+              <ArrowLeft size={16} /> 
+              <span className="btn-back-text">Kembali ke Daftar Artikel</span>
+              <span className="btn-back-text-mobile">Kembali</span>
             </button>
             <span className="badge-category" style={{
               backgroundColor: selectedArticle.category === 'Sampah' ? 'var(--orange)' : selectedArticle.category === 'Energi' ? 'var(--blue)' : 'var(--emerald)',
