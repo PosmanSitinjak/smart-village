@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
-import { Navigation, Compass } from 'lucide-react';
+import { Navigation, Compass, MapPin } from 'lucide-react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -117,7 +117,7 @@ const MapView = ({
     iconAnchor: [16, 16]
   });
 
-  // Function to fetch current GPS position once on demand or mount
+  // Function to fetch high-accuracy GPS position
   const fetchCurrentLocation = (autoCenter = true) => {
     if (!navigator.geolocation) {
       setLocationMessage('GPS tidak didukung pada browser ini');
@@ -125,33 +125,49 @@ const MapView = ({
     }
 
     setIsLocating(true);
-    setLocationMessage('Mencari posisi GPS Anda...');
+    setLocationMessage('Mencari posisi GPS presisi tinggi...');
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        const newPos = { lat, lng };
+    const geoOptionsHigh = { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 };
+    const geoOptionsLow = { enableHighAccuracy: false, timeout: 10000, maximumAge: 0 };
 
-        setUserLocation(newPos);
-        setIsLocating(false);
+    const handleSuccess = (position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      const accuracy = position.coords.accuracy ? Math.round(position.coords.accuracy) : null;
+      const newPos = { lat, lng };
 
-        if (autoCenter) {
-          setActiveCenter([lat, lng]);
-          setRecenterTrigger(prev => prev + 1);
-        }
+      setUserLocation(newPos);
+      setIsLocating(false);
 
-        setLocationMessage('📍 Lokasi Anda Ditemukan');
-        setTimeout(() => setLocationMessage(''), 2500);
-      },
-      (error) => {
-        console.warn("Geolocation error:", error);
-        setIsLocating(false);
-        setLocationMessage('Gagal mengambil GPS. Pastikan izin lokasi diizinkan.');
-        setTimeout(() => setLocationMessage(''), 3500);
-      },
-      { enableHighAccuracy: true, timeout: 8000, maximumAge: 10000 }
-    );
+      if (autoCenter) {
+        setActiveCenter([lat, lng]);
+        setRecenterTrigger(prev => prev + 1);
+      }
+
+      if (onLocationSelect && interactive) {
+        onLocationSelect(lat, lng);
+      }
+
+      const accText = accuracy ? ` (Akurasi: ±${accuracy}m)` : '';
+      setLocationMessage(`📍 Lokasi Presisi Ditemukan${accText}`);
+      setTimeout(() => setLocationMessage(''), 3500);
+    };
+
+    const handleError = (error) => {
+      console.warn("High-accuracy GPS failed, trying fallback...", error);
+      navigator.geolocation.getCurrentPosition(
+        handleSuccess,
+        (err) => {
+          console.warn("All geolocation attempts failed:", err);
+          setIsLocating(false);
+          setLocationMessage('Gagal mengambil GPS. Silakan klik langsung lokasi Anda di peta.');
+          setTimeout(() => setLocationMessage(''), 4500);
+        },
+        geoOptionsLow
+      );
+    };
+
+    navigator.geolocation.getCurrentPosition(handleSuccess, handleError, geoOptionsHigh);
   };
 
   // Automatically request GPS position once on component mount
@@ -170,14 +186,12 @@ const MapView = ({
   const handleMapClick = (latlng) => {
     if (interactive && onLocationSelect) {
       onLocationSelect(latlng.lat, latlng.lng);
+      setLocationMessage(`📍 Titik Terpilih: ${latlng.lat.toFixed(5)}, ${latlng.lng.toFixed(5)}`);
+      setTimeout(() => setLocationMessage(''), 3000);
     }
   };
 
   const handleRecenterClick = () => {
-    if (userLocation) {
-      setActiveCenter([userLocation.lat, userLocation.lng]);
-      setRecenterTrigger(prev => prev + 1);
-    }
     fetchCurrentLocation(true);
   };
 
@@ -209,7 +223,7 @@ const MapView = ({
           <Marker position={[userLocation.lat, userLocation.lng]} icon={userIcon}>
             <Popup>
               <div className="map-popup-content" style={{ textAlign: 'center', padding: '0.2rem' }}>
-                <strong style={{ color: '#2563eb' }}>📍 Posisi Anda Sekarang</strong>
+                <strong style={{ color: '#2563eb' }}>📍 Posisi GPS Perangkat Anda</strong>
                 <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
                   Lat: {userLocation.lat.toFixed(5)}, Lng: {userLocation.lng.toFixed(5)}
                 </p>
@@ -296,12 +310,36 @@ const MapView = ({
         </div>
       )}
 
+      {/* Interactive Click Hint */}
+      {interactive && (
+        <div style={{
+          position: 'absolute',
+          bottom: '1rem',
+          left: '1rem',
+          zIndex: 1000,
+          backgroundColor: 'rgba(255, 255, 255, 0.92)',
+          color: 'var(--text-primary)',
+          padding: '0.4rem 0.75rem',
+          borderRadius: '8px',
+          fontSize: '0.72rem',
+          fontWeight: 650,
+          boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+          border: '1px solid #e2e8f0',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.35rem'
+        }}>
+          <MapPin size={13} style={{ color: 'var(--emerald)' }} />
+          <span>Atau klik langsung pada peta untuk menandai titik presisi.</span>
+        </div>
+      )}
+
       {/* Floating GPS Recenter HUD Button */}
       <button
         type="button"
         className="btn-gps-recenter"
         onClick={handleRecenterClick}
-        title="Posisikan ke Lokasi Saya Sekarang"
+        title="Dapatkan Posisi GPS Presisi Tinggi"
       >
         <Navigation size={20} style={{ color: '#2563eb', fill: 'rgba(37, 99, 235, 0.25)' }} />
       </button>
