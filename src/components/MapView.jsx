@@ -53,17 +53,26 @@ const MapEventsHandler = ({ onMapClick }) => {
   return null;
 };
 
-// Sub-component to dynamically fly/pan the map view on center changes
+// Sub-component to dynamically pan/center map ONLY when center coordinates or trigger count actually changes
 const ChangeMapView = ({ center, zoom = 16, triggerCount = 0 }) => {
   const map = useMap();
+  const lastCenterRef = useRef(null);
+
+  const targetLat = center?.[0];
+  const targetLng = center?.[1];
+
   useEffect(() => {
-    if (center && center[0] !== undefined && center[1] !== undefined) {
-      map.flyTo(center, zoom, {
-        animate: true,
-        duration: 1.2
-      });
+    if (targetLat === undefined || targetLng === undefined) return;
+
+    const last = lastCenterRef.current;
+    const isNewPos = !last || Math.abs(last[0] - targetLat) > 0.00005 || Math.abs(last[1] - targetLng) > 0.00005;
+
+    if (isNewPos || triggerCount > 0) {
+      lastCenterRef.current = [targetLat, targetLng];
+      map.setView([targetLat, targetLng], zoom, { animate: true, duration: 0.8 });
     }
-  }, [center, zoom, triggerCount, map]);
+  }, [targetLat, targetLng, zoom, triggerCount, map]);
+
   return null;
 };
 
@@ -108,7 +117,7 @@ const MapView = ({
     iconAnchor: [16, 16]
   });
 
-  // Function to fetch current GPS position and center map
+  // Function to fetch current GPS position once on demand or mount
   const fetchCurrentLocation = (autoCenter = true) => {
     if (!navigator.geolocation) {
       setLocationMessage('GPS tidak didukung pada browser ini');
@@ -133,43 +142,21 @@ const MapView = ({
         }
 
         setLocationMessage('📍 Lokasi Anda Ditemukan');
-        setTimeout(() => setLocationMessage(''), 3000);
+        setTimeout(() => setLocationMessage(''), 2500);
       },
       (error) => {
         console.warn("Geolocation error:", error);
         setIsLocating(false);
         setLocationMessage('Gagal mengambil GPS. Pastikan izin lokasi diizinkan.');
-        setTimeout(() => setLocationMessage(''), 4000);
+        setTimeout(() => setLocationMessage(''), 3500);
       },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      { enableHighAccuracy: true, timeout: 8000, maximumAge: 10000 }
     );
   };
 
-  // Automatically request GPS position on component mount
+  // Automatically request GPS position once on component mount
   useEffect(() => {
     fetchCurrentLocation(true);
-
-    // Watch position in real-time
-    let watchId = null;
-    if (navigator.geolocation) {
-      watchId = navigator.geolocation.watchPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          setUserLocation({ lat, lng });
-        },
-        (error) => {
-          console.warn("Watch position error:", error);
-        },
-        { enableHighAccuracy: true, maximumAge: 5000 }
-      );
-    }
-
-    return () => {
-      if (watchId !== null && navigator.geolocation) {
-        navigator.geolocation.clearWatch(watchId);
-      }
-    };
   }, []);
 
   // Sync activeCenter when center prop changes externally
@@ -214,7 +201,7 @@ const MapView = ({
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {/* Dynamic center updater */}
+        {/* Dynamic center updater (stable, no shaking) */}
         <ChangeMapView center={activeCenter} zoom={16} triggerCount={recenterTrigger} />
 
         {/* User Location Marker (You are here!) */}
