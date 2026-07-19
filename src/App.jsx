@@ -30,6 +30,7 @@ const MainAppContent = () => {
     userRole, 
     isAuthModalOpen, 
     isPrivacyModalOpen, 
+    setIsPrivacyModalOpen,
     currentUser, 
     userPoints, 
     logout, 
