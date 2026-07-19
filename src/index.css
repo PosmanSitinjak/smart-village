@@ -1583,6 +1583,267 @@ body {
   flex-shrink: 0;
 }
 
+/* SOS Modal Base Styles */
+.sos-modal-content {
+  max-width: 520px;
+  width: 92%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(220, 38, 38, 0.2), 0 0 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  background-color: #ffffff;
+  box-sizing: border-box;
+}
+
+.sos-modal-header {
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.sos-header-grid {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  z-index: 1;
+  min-width: 0;
+  flex: 1;
+  padding-right: 0.5rem;
+}
+
+.sos-icon-wrapper {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sos-title-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.sos-title-text h2 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sos-title-text p {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0.1rem 0 0 0;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-close-sos {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  z-index: 1;
+}
+
+.btn-close-sos:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+.sos-modal-body {
+  padding: 1.5rem 1.5rem;
+  box-sizing: border-box;
+}
+
+.sos-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  box-sizing: border-box;
+}
+
+.sos-notice-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background-color: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.sos-notice-icon {
+  color: #ef4444;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.sos-notice-content {
+  font-size: 0.78rem;
+  color: #991b1b;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.sos-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.45rem;
+  display: block;
+  letter-spacing: 0.5px;
+}
+
+.sos-select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  border: 1.5px solid #f87171;
+  background-color: #ffffff;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.sos-select:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+.sos-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 90px;
+  padding: 0.75rem 0.85rem;
+  border-radius: 10px;
+  border: 1.5px solid #fecaca;
+  font-size: 0.82rem;
+  outline: none;
+  resize: vertical;
+  line-height: 1.45;
+  transition: all 0.2s ease;
+  font-family: var(--font-body);
+}
+
+.sos-textarea:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+
+.sos-gps-card {
+  background: #f8fafc;
+  padding: 0.75rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  box-sizing: border-box;
+}
+
+.sos-gps-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.sos-gps-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.sos-gps-status-text {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sos-gps-right {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.sos-gps-coords {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-family: monospace;
+  background: #f1f5f9;
+  padding: 0.3rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+  word-break: break-all;
+}
+
+.sos-modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 0.25rem;
+}
+
+.btn-sos-cancel {
+  padding: 0.65rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.btn-sos-submit {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  padding: 0.65rem 1.35rem;
+  border-radius: 10px;
+  font-weight: 750;
+  font-size: 0.82rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-sos-submit:disabled {
+  background: #ef444480;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
 /* Article Detail Modal: Hero Text Overlay */
 .hero-text-content {
   position: absolute;
