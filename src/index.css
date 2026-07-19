@@ -1590,6 +1590,99 @@ body {
   flex-shrink: 0;
 }
 
+/* Standalone Dedicated Article Reader View */
+.single-article-view {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto 2.5rem auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border: 1px solid var(--border-glass-bright);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.article-standalone-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.15rem 1.75rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+.article-standalone-banner {
+  width: 100%;
+  height: 340px;
+  overflow: hidden;
+  position: relative;
+  background-color: #0f172a;
+}
+
+.article-standalone-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.article-standalone-body {
+  padding: 2.25rem 2.5rem;
+  box-sizing: border-box;
+}
+
+.article-standalone-title {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 850;
+  color: var(--text-primary);
+  line-height: 1.3;
+  margin-top: 0;
+  margin-bottom: 1.15rem;
+  letter-spacing: -0.5px;
+}
+
+.article-standalone-footer {
+  padding: 1.5rem 2rem;
+  border-top: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .single-article-view {
+    border-radius: 14px !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .article-standalone-bar {
+    padding: 0.85rem 1rem !important;
+  }
+
+  .article-standalone-banner {
+    height: 200px !important;
+  }
+
+  .article-standalone-body {
+    padding: 1.25rem 1.15rem !important;
+  }
+
+  .article-standalone-title {
+    font-size: 1.35rem !important;
+    line-height: 1.35 !important;
+    margin-bottom: 0.85rem !important;
+  }
+
+  .article-standalone-footer {
+    padding: 1.15rem 1rem !important;
+  }
+}
+
 /* SOS Modal Base Styles */
 .sos-modal-content {
   max-width: 520px;
