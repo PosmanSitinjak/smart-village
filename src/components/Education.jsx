@@ -437,17 +437,6 @@ const Education = () => {
               </div>
             )}
           </div>
-
-          {/* Bottom Standalone Actions Footer */}
-          <div className="article-standalone-footer">
-            <button 
-              className="btn btn-primary" 
-              onClick={() => setSelectedArticle(null)}
-              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0 auto' }}
-            >
-              <ArrowLeft size={16} /> Selesai Membaca & Kembali
-            </button>
-          </div>
         </div>
       ) : (
         /* Normal Education View: Articles List + Gamified Quiz */
