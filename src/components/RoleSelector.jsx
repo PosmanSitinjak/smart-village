@@ -278,12 +278,17 @@ const RoleSelector = () => {
                   </div>
                 </div>
 
-                <div style={{ marginTop: '1.25rem', fontSize: '0.72rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}>
-                  <span>🔒 Transparansi Data: </span>
-                  <button type="button" className="btn-link" style={{ fontSize: '0.72rem', fontWeight: 600 }} onClick={() => setIsPrivacyModalOpen(true)}>
+                <p style={{ marginTop: '1.25rem', fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.5, margin: '1.25rem 0 0 0' }}>
+                  🔒 Transparansi Data:{' '}
+                  <button 
+                    type="button" 
+                    className="btn-link" 
+                    style={{ fontSize: '0.75rem', fontWeight: 700, textDecoration: 'underline', color: 'var(--emerald)', display: 'inline' }} 
+                    onClick={() => setIsPrivacyModalOpen(true)}
+                  >
                     Baca Kebijakan Privasi
                   </button>
-                </div>
+                </p>
               </form>
             )}
           </div>
@@ -382,12 +387,17 @@ const RoleSelector = () => {
                   </button>
                 </div>
 
-                <div style={{ marginTop: '1.25rem', fontSize: '0.72rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}>
-                  <span>Dengan mendaftar, Anda menyetujui </span>
-                  <button type="button" className="btn-link" style={{ fontSize: '0.72rem', fontWeight: 600 }} onClick={() => setIsPrivacyModalOpen(true)}>
+                <p style={{ marginTop: '1.25rem', fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.5, margin: '1.25rem 0 0 0' }}>
+                  Dengan mendaftar, Anda menyetujui{' '}
+                  <button 
+                    type="button" 
+                    className="btn-link" 
+                    style={{ fontSize: '0.75rem', fontWeight: 700, textDecoration: 'underline', color: 'var(--emerald)', display: 'inline' }} 
+                    onClick={() => setIsPrivacyModalOpen(true)}
+                  >
                     Ketentuan Data & Privasi
                   </button>
-                </div>
+                </p>
               </form>
             )}
           </div>
