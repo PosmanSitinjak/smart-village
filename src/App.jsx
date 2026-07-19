@@ -131,7 +131,70 @@ const MainAppContent = () => {
           {renderActiveView()}
         </div>
         <footer className="site-copyright-footer">
-          <p>© {new Date().getFullYear()} @ayamgeprek. All rights reserved.</p>
+          <div className="footer-main-grid">
+            {/* Brand Column */}
+            <div className="footer-brand-col">
+              <div className="footer-brand-logo">
+                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'var(--emerald)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Leaf size={18} color="#ffffff" />
+                </div>
+                <span style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.3px' }}>
+                  SmartVillage
+                </span>
+              </div>
+              <p className="footer-brand-tagline">
+                Kanal digital resmi pelaporan masalah fasilitas publik, respon darurat bencana, dan edukasi kelestarian lingkungan desa.
+              </p>
+              <div className="footer-status-badge">
+                <span className="pulse-green-dot"></span>
+                <span>Sistem Real-time Online</span>
+              </div>
+            </div>
+
+            {/* Quick Links Column */}
+            <div className="footer-links-col">
+              <h4>Navigasi Portal</h4>
+              <ul>
+                <li><button type="button" onClick={() => setActiveTab('dashboard')}>Beranda Utama</button></li>
+                <li><button type="button" onClick={() => setActiveTab('reports')}>Layanan Laporan</button></li>
+                <li><button type="button" onClick={() => setActiveTab('education')}>Edukasi & Kuis</button></li>
+                <li><button type="button" onClick={() => setActiveTab('leaderboard')}>Papan Peringkat</button></li>
+              </ul>
+            </div>
+
+            {/* Emergency & Services Column */}
+            <div className="footer-links-col">
+              <h4>Layanan Desa</h4>
+              <ul>
+                <li><span className="footer-link-text">Posko Bencana Alam</span></li>
+                <li><span className="footer-link-text">Posyandu Balita & Lansia</span></li>
+                <li><span className="footer-link-text">Aduan Fasilitas Publik</span></li>
+                <li><button type="button" onClick={() => setIsPrivacyModalOpen(true)}>Kebijakan Privasi</button></li>
+              </ul>
+            </div>
+
+            {/* Copyright & Info Column */}
+            <div className="footer-links-col">
+              <h4>Hak Cipta & Info</h4>
+              <p className="footer-copyright-text">
+                © {new Date().getFullYear()} <strong>@ayamgeprek</strong>.<br />
+                All rights reserved.
+              </p>
+              <div className="footer-tag-pills">
+                <span>Desa Digital</span>
+                <span>Eco-Smart</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="footer-bottom-bar">
+            <p>© {new Date().getFullYear()} @ayamgeprek. All rights reserved.</p>
+            <div className="footer-bottom-links">
+              <button type="button" onClick={() => setIsPrivacyModalOpen(true)}>Kebijakan Privasi</button>
+              <span>•</span>
+              <button type="button" onClick={() => openAuthModal('login')}>Portal Warga</button>
+            </div>
+          </div>
         </footer>
       </main>
 
