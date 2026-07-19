@@ -1526,38 +1526,45 @@ body {
 .status-text-badge.status-selesai { color: var(--emerald); }
 
 /* MODAL DETAILS VIEW OVERLAY */
-.modal-backdrop {
-  position: fixed;
+.modal-backdrop,
+.role-selector-container,
+.sos-modal-backdrop {
+  position: fixed !important;
   top: 0 !important;
   left: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  background-color: rgba(15, 23, 42, 0.85); /* Deep dark to completely isolate selected article */
-  backdrop-filter: blur(16px); /* Strong blur to obscure background details */
-  -webkit-backdrop-filter: blur(16px);
-  z-index: 11000; /* Floats above top/bottom mobile docks */
-  display: flex;
-  align-items: flex-start; /* Align from top so content is scrolled naturally */
-  justify-content: center;
-  padding: 2.5rem 1.5rem;
-  overflow-y: auto; /* Backdrop acts as the scroll container */
-  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: rgba(15, 23, 42, 0.85) !important; /* Deep dark to isolate active modal */
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  z-index: 25000 !important; /* Floats high above top/bottom mobile docks (10005) */
+  display: flex !important;
+  align-items: center !important; /* Centered vertically for elegant floating presentation */
+  justify-content: center !important;
+  padding: 1.25rem 0.85rem !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modal-content {
   width: 100%;
   max-width: 980px;
-  margin: auto; /* Centers card vertically if short, allows vertical margin flow if tall */
+  margin: auto !important;
+  max-height: 88vh !important;
+  overflow-y: auto !important;
   background-color: #ffffff;
   border-radius: 16px;
   border: 1px solid var(--border-glass-bright);
-  box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.15), 0 10px 10px -5px rgba(15, 23, 42, 0.05);
-  overflow: hidden; /* Retain rounded corners of top banner image */
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.35);
   display: flex;
   flex-direction: column;
-  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative !important;
+  z-index: 25001 !important;
 }
 
 /* Article Detail Modal: Hero Banner */
@@ -1586,13 +1593,17 @@ body {
 /* SOS Modal Base Styles */
 .sos-modal-content {
   max-width: 520px;
-  width: 92%;
+  width: 94%;
+  margin: auto !important;
+  max-height: 88vh !important;
+  overflow-y: auto !important;
   border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(220, 38, 38, 0.2), 0 0 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(220, 38, 38, 0.25), 0 0 30px rgba(0, 0, 0, 0.15);
   border: 1px solid rgba(220, 38, 38, 0.25);
   background-color: #ffffff;
   box-sizing: border-box;
+  position: relative !important;
+  z-index: 25001 !important;
 }
 
 .sos-modal-header {
@@ -3556,18 +3567,24 @@ body {
   }
 
   /* Modals full screen on small phones */
-  .modal-backdrop {
-    padding: 1.25rem 0.5rem !important; /* Extremely tight padding to maximize content width */
+  .modal-backdrop,
+  .sos-modal-backdrop,
+  .role-selector-container {
+    padding: 1rem 0.65rem !important;
+    z-index: 25000 !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
-  /* Article Detail Modal: Full-height mobile mode */
-  .modal-content {
-    width: 96% !important;
-    margin: 0.5rem auto !important;
-    padding: 1.25rem;
-    max-height: none !important;
-    overflow: visible !important; /* Both axes visible so content flows naturally */
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.25) !important;
+  .modal-content,
+  .role-selector-card,
+  .sos-modal-content {
+    width: 95% !important;
+    margin: auto !important;
+    max-height: 86vh !important;
+    overflow-y: auto !important;
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.35) !important;
+    z-index: 25001 !important;
   }
 
   .article-hero-banner {
@@ -4124,13 +4141,17 @@ body {
 
 @media (max-width: 1024px) {
   .role-selector-container {
-    align-items: flex-start !important;
-    padding: 1.5rem 1rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 1rem 0.65rem !important;
+    z-index: 25000 !important;
   }
   .role-selector-card {
-    padding: 2.5rem 1.5rem;
-    margin-top: 1.5rem !important;
-    margin-bottom: 5rem !important; /* Extra bottom margin to prevent cutting off by mobile bottom bar */
+    padding: 1.75rem 1.25rem !important;
+    margin: auto !important;
+    max-height: 86vh !important;
+    overflow-y: auto !important;
+    z-index: 25001 !important;
   }
   .portal-options {
     grid-template-columns: 1fr;
