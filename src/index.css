@@ -1280,6 +1280,8 @@ body {
 /* REPORTS LIST / TRACKER VIEW */
 .filters-card {
   margin-bottom: 2rem;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .filters-bar {
@@ -1288,16 +1290,20 @@ body {
   align-items: center;
   flex-wrap: wrap;
   gap: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .search-box {
   position: relative;
   flex: 1;
-  min-width: 320px;
+  min-width: 0;
+  width: 100%;
 }
 
 .search-box input {
   width: 100%;
+  box-sizing: border-box;
   background-color: #ffffff;
   border: 1.5px solid #e2e8f0;
   border-radius: var(--radius-lg);
@@ -1305,6 +1311,7 @@ body {
   color: var(--text-primary);
   font-family: var(--font-body);
   font-size: 0.9rem;
+  text-overflow: ellipsis;
   transition: var(--transition-smooth);
 }
 
@@ -1328,8 +1335,9 @@ body {
 
 .filter-dropdowns {
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .filter-group {
@@ -1345,13 +1353,15 @@ body {
   background-color: #ffffff;
   border: 1.5px solid #e2e8f0;
   color: var(--text-primary);
-  padding: 0.45rem 1.1rem;
+  padding: 0.55rem 1.1rem;
   border-radius: var(--radius-md);
   font-family: var(--font-body);
   font-size: 0.85rem;
   cursor: pointer;
   outline: none;
   transition: border-color 0.2s;
+  height: 42px;
+  box-sizing: border-box;
 }
 
 .filter-group select:focus {
@@ -3169,38 +3179,67 @@ body {
 
   /* Filters bar optimization on mobile */
   .filters-card {
-    padding: 1.25rem !important; /* Explicit card padding */
+    padding: 1rem 1.15rem !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
   }
 
   .filters-bar {
-    gap: 1rem !important;
+    gap: 0.85rem !important;
     flex-direction: column !important;
     align-items: stretch !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .search-box {
     width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .search-box input {
+    width: 100% !important;
+    font-size: 0.82rem !important;
+    padding: 0.75rem 1rem 0.75rem 2.5rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .search-icon {
+    left: 0.85rem !important;
   }
 
   .filter-dropdowns {
-    flex-direction: column !important; /* Stack vertically on mobile */
-    align-items: stretch !important;
-    gap: 0.85rem !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
     width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .filter-group {
+    flex: 1 !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: space-between !important;
-    width: 100% !important;
-    gap: 1rem !important;
+    gap: 0.45rem !important;
+    min-width: 0 !important;
+    font-size: 0.78rem !important;
+  }
+
+  .filter-group span {
+    white-space: nowrap !important;
+    font-size: 0.78rem !important;
   }
 
   .filter-group select {
     flex: 1 !important;
     min-width: 0 !important;
-    width: auto !important; /* Let flex handle width stretching */
+    width: 100% !important;
+    font-size: 0.78rem !important;
+    padding: 0.45rem 0.6rem !important;
+    height: 38px !important;
+    border-radius: 8px !important;
   }
 
   /* Map sizing adjustments on smaller screens */

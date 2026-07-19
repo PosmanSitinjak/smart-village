@@ -111,7 +111,7 @@ const ReportList = () => {
                 <Search size={18} className="search-icon" />
                 <input 
                   type="text" 
-                  placeholder="Cari berdasarkan judul, nama warga, ID..."
+                  placeholder="Cari judul, nama warga, atau ID..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -130,6 +130,7 @@ const ReportList = () => {
                 </div>
 
                 <div className="filter-group">
+                  <Filter size={14} className="text-gray-400" />
                   <span>Status:</span>
                   <select 
                     value={selectedStatus} 
