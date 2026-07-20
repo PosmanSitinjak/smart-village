@@ -290,6 +290,49 @@ export const AppProvider = ({ children }) => {
     return { success: true };
   };
 
+  // Admin edits user account details (name, points, password)
+  const updateUser = async (originalUsername, updatedData) => {
+    const cleanUser = originalUsername.toLowerCase().trim();
+    setUsers(prev => 
+      prev.map(u => u.username.toLowerCase() === cleanUser 
+        ? { ...u, ...updatedData } 
+        : u
+      )
+    );
+
+    if (currentUser && currentUser.username.toLowerCase() === cleanUser) {
+      setCurrentUser(prev => ({ ...prev, ...updatedData }));
+    }
+
+    if (isFirebaseConfigured && db) {
+      try {
+        await updateDoc(doc(db, "users", cleanUser), updatedData);
+      } catch (e) {
+        console.error("Failed to update user in Firebase:", e);
+      }
+    }
+    return { success: true };
+  };
+
+  // Admin deletes user account
+  const deleteUser = async (username) => {
+    const cleanUser = username.toLowerCase().trim();
+    setUsers(prev => prev.filter(u => u.username.toLowerCase() !== cleanUser));
+
+    if (currentUser && currentUser.username.toLowerCase() === cleanUser) {
+      setCurrentUser(null);
+    }
+
+    if (isFirebaseConfigured && db) {
+      try {
+        await deleteDoc(doc(db, "users", cleanUser));
+      } catch (e) {
+        console.error("Failed to delete user from Firebase:", e);
+      }
+    }
+    return { success: true };
+  };
+
   // Login a citizen
   const loginUser = (username, password) => {
     const cleanUser = (username || '').trim().toLowerCase();
@@ -531,6 +574,8 @@ export const AppProvider = ({ children }) => {
         isPrivacyModalOpen,
         setIsPrivacyModalOpen,
         registerUser,
+        updateUser,
+        deleteUser,
         loginUser,
         resetPassword,
         loginAdmin,

@@ -19,7 +19,8 @@ import {
   LogOut, 
   Leaf,
   Menu,
-  X
+  X,
+  Users
 } from 'lucide-react';
 import './App.css';
 
@@ -50,6 +51,7 @@ const MainAppContent = () => {
       case 'admin_reports':
       case 'admin_education':
       case 'admin_announcements':
+      case 'admin_users':
         return <AdminPanel />;
       case 'leaderboard':
         return <Leaderboard />;
@@ -232,6 +234,13 @@ const MainAppContent = () => {
               <Megaphone size={18} />
               <span>Pengumuman</span>
             </button>
+            <button 
+              className={`mobile-nav-item ${activeTab === 'admin_users' ? 'active' : ''}`}
+              onClick={() => setActiveTab('admin_users')}
+            >
+              <Users size={18} />
+              <span>Akun Warga</span>
+            </button>
           </>
         ) : (
           <>
@@ -316,6 +325,14 @@ const MainAppContent = () => {
                     >
                       <Megaphone size={16} />
                       <span>Kelola Pengumuman</span>
+                    </button>
+                    <button 
+                      type="button"
+                      className={`drawer-nav-item ${activeTab === 'admin_users' ? 'active' : ''}`}
+                      onClick={() => { setActiveTab('admin_users'); setIsMobileMenuOpen(false); }}
+                    >
+                      <Users size={16} />
+                      <span>Kelola Akun Warga</span>
                     </button>
                   </>
                 ) : (

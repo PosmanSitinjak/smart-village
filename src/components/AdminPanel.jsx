@@ -12,7 +12,11 @@ import {
   FileText,
   Video,
   BookOpen,
-  ArrowLeft
+  ArrowLeft,
+  Users,
+  Eye,
+  EyeOff,
+  Leaf
 } from 'lucide-react';
 
 const AdminPanel = () => {
@@ -29,12 +33,63 @@ const AdminPanel = () => {
     addAnnouncement,
     updateAnnouncement,
     deleteAnnouncement,
+    users,
+    updateUser,
+    deleteUser,
     activeTab
   } = useContext(AppContext);
 
   // --- State for Announcements Management ---
   const [announcementInput, setAnnouncementInput] = useState('');
   const [selectedAnnId, setSelectedAnnId] = useState(null);
+
+  // --- State for Users Management ---
+  const [selectedUserUsername, setSelectedUserUsername] = useState(null);
+  const [editUserName, setEditUserName] = useState('');
+  const [editUserPoints, setEditUserPoints] = useState(0);
+  const [editUserPassword, setEditUserPassword] = useState('');
+  const [userSearchQuery, setUserSearchQuery] = useState('');
+  const [showPasswordMap, setShowPasswordMap] = useState({});
+
+  const toggleShowPassword = (username) => {
+    setShowPasswordMap(prev => ({ ...prev, [username]: !prev[username] }));
+  };
+
+  const handleEditUserClick = (user) => {
+    setSelectedUserUsername(user.username);
+    setEditUserName(user.name);
+    setEditUserPoints(user.points || 0);
+    setEditUserPassword(user.password || '');
+  };
+
+  const handleSaveUser = async (e) => {
+    e.preventDefault();
+    if (!selectedUserUsername) return;
+
+    if (!editUserName.trim() || !editUserPassword.trim()) {
+      alert('Nama dan Password tidak boleh kosong!');
+      return;
+    }
+
+    await updateUser(selectedUserUsername, {
+      name: editUserName.trim(),
+      points: Number(editUserPoints),
+      password: editUserPassword.trim()
+    });
+
+    alert(`Akun warga "${selectedUserUsername}" berhasil diperbarui!`);
+    setSelectedUserUsername(null);
+  };
+
+  const handleDeleteUserClick = async (username) => {
+    if (window.confirm(`Apakah Anda yakin ingin menghapus akun warga "${username}"? Tindakan ini tidak dapat dibatalkan.`)) {
+      await deleteUser(username);
+      if (selectedUserUsername === username) {
+        setSelectedUserUsername(null);
+      }
+      alert(`Akun warga "${username}" berhasil dihapus.`);
+    }
+  };
 
   const handleSaveAnnouncement = async (e) => {
     e.preventDefault();
@@ -1174,6 +1229,158 @@ const AdminPanel = () => {
               </form>
             </div>
           </section>
+        </div>
+      )}
+
+      {/* VIEW CONDITIONAL 4: USER ACCOUNTS MANAGEMENT (SEPARATE DEDICATED VIEW) */}
+      {activeTab === 'admin_users' && (
+        <div className="admin-users-page animate-fade-in" style={{ width: '100%' }}>
+          
+          <div className="card-header admin-table-header" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '1rem', marginBottom: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Users size={22} className="text-emerald" /> Kelola Basis Data Akun Warga Terdaftar ({users ? users.length : 0})
+              </h2>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '0.2rem 0 0 0' }}>
+                Staf Desa memiliki wewenang untuk mengubah nama, jumlah poin, dan kata sandi, serta menghapus akun warga desa.
+              </p>
+            </div>
+
+            <div className="admin-search" style={{ minWidth: '240px' }}>
+              <Search size={16} />
+              <input 
+                type="text" 
+                placeholder="Cari username atau nama warga..." 
+                value={userSearchQuery}
+                onChange={(e) => setUserSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="card-body no-padding table-responsive">
+            {(!users || users.length === 0) ? (
+              <p style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-muted)' }}>Belum ada akun warga terdaftar.</p>
+            ) : (
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Nama Lengkap Warga</th>
+                    <th>Perolehan Poin (PTS)</th>
+                    <th>Kata Sandi</th>
+                    <th className="text-right" style={{ width: '140px' }}>Aksi Admin</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users
+                    .filter(u => !userSearchQuery || u.name.toLowerCase().includes(userSearchQuery.toLowerCase()) || u.username.toLowerCase().includes(userSearchQuery.toLowerCase()))
+                    .map((u) => {
+                      const isPasswordVisible = showPasswordMap[u.username];
+                      return (
+                        <tr key={u.username} className={selectedUserUsername === u.username ? 'row-selected' : ''}>
+                          <td><strong style={{ color: 'var(--emerald)' }}>@{u.username}</strong></td>
+                          <td style={{ fontWeight: 600 }}>{u.name}</td>
+                          <td>
+                            <span className="badge-points" style={{ background: '#ecfdf5', color: '#059669', padding: '0.2rem 0.65rem', borderRadius: '20px', fontWeight: 800, fontSize: '0.8rem', border: '1px solid #a7f3d0' }}>
+                              <Leaf size={12} style={{ display: 'inline', marginRight: '4px' }} />
+                              {u.points || 0} PTS
+                            </span>
+                          </td>
+                          <td>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                              <code style={{ background: '#f1f5f9', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem', letterSpacing: isPasswordVisible ? '0.5px' : '2px' }}>
+                                {isPasswordVisible ? u.password : '••••••••'}
+                              </code>
+                              <button 
+                                type="button" 
+                                onClick={() => toggleShowPassword(u.username)}
+                                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '0.15rem', display: 'inline-flex' }}
+                                title={isPasswordVisible ? "Sembunyikan Sandi" : "Tampilkan Sandi"}
+                              >
+                                {isPasswordVisible ? <EyeOff size={14} /> : <Eye size={14} />}
+                              </button>
+                            </div>
+                          </td>
+                          <td className="text-right actions-cell">
+                            <button 
+                              type="button" 
+                              className="btn-action-icon btn-edit" 
+                              onClick={() => handleEditUserClick(u)}
+                              title="Edit Akun Warga"
+                              style={{ marginRight: '0.4rem' }}
+                            >
+                              <Edit3 size={14} />
+                            </button>
+                            <button 
+                              type="button" 
+                              className="btn-action-icon btn-delete" 
+                              onClick={() => handleDeleteUserClick(u.username)}
+                              title="Hapus Akun Warga"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            )}
+          </div>
+
+          {/* Modal / Inline Editor Form for Editing User */}
+          {selectedUserUsername && (
+            <div className="card animate-fade-in" style={{ marginTop: '1.5rem', background: '#ffffff', padding: '1.25rem', borderRadius: '12px', border: '1.5px solid var(--emerald)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.75rem' }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)' }}>✏️ Edit Data Akun Warga: @{selectedUserUsername}</h3>
+                <button type="button" className="btn-close-small" onClick={() => setSelectedUserUsername(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.8rem', color: 'var(--text-muted)' }}>Tutup</button>
+              </div>
+
+              <form onSubmit={handleSaveUser} className="editor-form">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+                  <div className="form-group">
+                    <label style={{ fontSize: '0.8rem', fontWeight: 700, display: 'block', marginBottom: '0.3rem' }}>Nama Lengkap Warga</label>
+                    <input 
+                      type="text" 
+                      value={editUserName} 
+                      onChange={(e) => setEditUserName(e.target.value)} 
+                      required 
+                      style={{ padding: '0.6rem 0.75rem', borderRadius: '6px', fontSize: '0.85rem' }} 
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label style={{ fontSize: '0.8rem', fontWeight: 700, display: 'block', marginBottom: '0.3rem' }}>Perolehan Poin (PTS)</label>
+                    <input 
+                      type="number" 
+                      value={editUserPoints} 
+                      onChange={(e) => setEditUserPoints(e.target.value)} 
+                      required 
+                      min="0"
+                      style={{ padding: '0.6rem 0.75rem', borderRadius: '6px', fontSize: '0.85rem' }} 
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label style={{ fontSize: '0.8rem', fontWeight: 700, display: 'block', marginBottom: '0.3rem' }}>Kata Sandi Baru</label>
+                    <input 
+                      type="text" 
+                      value={editUserPassword} 
+                      onChange={(e) => setEditUserPassword(e.target.value)} 
+                      required 
+                      style={{ padding: '0.6rem 0.75rem', borderRadius: '6px', fontSize: '0.85rem', fontWeight: 700 }} 
+                    />
+                  </div>
+                </div>
+
+                <div className="editor-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+                  <button type="button" className="btn btn-secondary" onClick={() => setSelectedUserUsername(null)}>Batal</button>
+                  <button type="submit" className="btn btn-primary" style={{ fontWeight: 700 }}>Simpan Perubahan</button>
+                </div>
+              </form>
+            </div>
+          )}
+
         </div>
       )}
     </div>

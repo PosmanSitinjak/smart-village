@@ -9,7 +9,8 @@ import {
   LogOut,
   UserCheck,
   Award,
-  Megaphone
+  Megaphone,
+  Users
 } from 'lucide-react';
 
 const Sidebar = () => {
@@ -31,7 +32,8 @@ const Sidebar = () => {
       return [
         { id: 'admin_reports', name: 'Kelola Laporan', icon: ClipboardList },
         { id: 'admin_education', name: 'Kelola Artikel & Kuis', icon: BookOpen },
-        { id: 'admin_announcements', name: 'Kelola Pengumuman', icon: Megaphone }
+        { id: 'admin_announcements', name: 'Kelola Pengumuman', icon: Megaphone },
+        { id: 'admin_users', name: 'Kelola Akun Warga', icon: Users }
       ];
     } else {
       return [
