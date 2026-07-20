@@ -17,7 +17,6 @@ const Sidebar = () => {
     activeTab, 
     setActiveTab, 
     userPoints, 
-    resetData, 
     userRole, 
     currentUser, 
     logout,
@@ -170,8 +169,8 @@ const Sidebar = () => {
               gap: '0.35rem',
               transition: 'color 0.2s'
             }}
-            onMouseOver={(e) => e.target.style.color = 'var(--emerald)'}
-            onMouseOut={(e) => e.target.style.color = 'var(--text-muted)'}
+            onMouseOver={(e) => e.currentTarget.style.color = 'var(--emerald)'}
+            onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
           >
             <ShieldCheck size={12} />
             <span>Kebijakan Privasi & Ketentuan</span>

@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { INITIAL_REPORTS, EDUCATION_ARTICLES } from '../utils/mockData';
+import { EDUCATION_ARTICLES } from '../utils/mockData';
 import { db, isFirebaseConfigured } from '../firebase';
 import { 
   collection, 
@@ -110,6 +110,8 @@ export const AppProvider = ({ children }) => {
       if (!snapshot.empty) {
         const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setAnnouncements(list);
+      } else {
+        setAnnouncements([]);
       }
     }, (err) => console.error("Firestore announcements listener error:", err));
 
@@ -119,6 +121,8 @@ export const AppProvider = ({ children }) => {
         const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setReports(list);
+      } else {
+        setReports([]);
       }
     }, (err) => console.error("Firestore reports listener error:", err));
 
@@ -127,6 +131,8 @@ export const AppProvider = ({ children }) => {
       if (!snapshot.empty) {
         const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setUsers(list);
+      } else {
+        setUsers([]);
       }
     }, (err) => console.error("Firestore users listener error:", err));
 
@@ -135,6 +141,8 @@ export const AppProvider = ({ children }) => {
       if (!snapshot.empty) {
         const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setArticles(list);
+      } else {
+        setArticles([]);
       }
     }, (err) => console.error("Firestore articles listener error:", err));
 
@@ -145,6 +153,16 @@ export const AppProvider = ({ children }) => {
       unsubArticles();
     };
   }, []);
+
+  // Sync currentUser when users array updates (e.g. from Firestore listener)
+  useEffect(() => {
+    if (currentUser) {
+      const updatedUser = users.find(u => u.username === currentUser.username);
+      if (updatedUser && JSON.stringify(updatedUser) !== JSON.stringify(currentUser)) {
+        setCurrentUser(updatedUser);
+      }
+    }
+  }, [users]);
 
   // Sync to localStorage as fallback
   useEffect(() => {
@@ -302,7 +320,7 @@ export const AppProvider = ({ children }) => {
   const addReport = async (newReport) => {
     const reportWithId = {
       ...newReport,
-      id: `REP-${Math.floor(100 + Math.random() * 900)}`,
+      id: `REP-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
       createdAt: new Date().toISOString(),
       adminNote: "",
     };
@@ -319,44 +337,43 @@ export const AppProvider = ({ children }) => {
 
   // Admin updates report status and optionally awards points
   const updateReportStatus = async (id, newStatus, adminNote = "", pointsToAward = 0) => {
-    let targetReport = null;
+    // Compute targetReport BEFORE setReports to avoid race condition
+    const currentReport = reports.find(rep => rep.id === id);
+    if (!currentReport) return;
+
+    const shouldAwardPoints = pointsToAward > 0 && !currentReport.pointsAwarded;
+
+    const targetReport = {
+      ...currentReport,
+      status: newStatus,
+      adminNote: adminNote !== undefined ? adminNote : currentReport.adminNote,
+      pointsAwarded: shouldAwardPoints ? pointsToAward : currentReport.pointsAwarded
+    };
 
     setReports((prev) =>
-      prev.map((rep) => {
-        if (rep.id === id) {
-          targetReport = {
-            ...rep,
-            status: newStatus,
-            adminNote: adminNote !== undefined ? adminNote : rep.adminNote,
-            pointsAwarded: pointsToAward > 0 ? (rep.pointsAwarded || 0) + pointsToAward : rep.pointsAwarded
-          };
-
-          if (pointsToAward > 0 && !rep.pointsAwarded) {
-            setUsers(prevUsers =>
-              prevUsers.map(u => {
-                if (u.name.toLowerCase() === rep.reporterName.toLowerCase() || 
-                    (currentUser && u.username === currentUser.username && rep.reporterName === currentUser.name)) {
-                  const updatedUser = { ...u, points: u.points + pointsToAward };
-                  if (currentUser && u.username === currentUser.username) {
-                    setCurrentUser(updatedUser);
-                  }
-                  if (isFirebaseConfigured && db) {
-                    updateDoc(doc(db, "users", u.username), { points: updatedUser.points }).catch(console.error);
-                  }
-                  return updatedUser;
-                }
-                return u;
-              })
-            );
-          }
-
-          return targetReport;
-        }
-        return rep;
-      })
+      prev.map((rep) => rep.id === id ? targetReport : rep)
     );
 
-    if (isFirebaseConfigured && db && targetReport) {
+    if (shouldAwardPoints) {
+      setUsers(prevUsers =>
+        prevUsers.map(u => {
+          if (u.name.toLowerCase() === currentReport.reporterName.toLowerCase() || 
+              (currentUser && u.username === currentUser.username && currentReport.reporterName === currentUser.name)) {
+            const updatedUser = { ...u, points: u.points + pointsToAward };
+            if (currentUser && u.username === currentUser.username) {
+              setCurrentUser(updatedUser);
+            }
+            if (isFirebaseConfigured && db) {
+              updateDoc(doc(db, "users", u.username), { points: updatedUser.points }).catch(console.error);
+            }
+            return updatedUser;
+          }
+          return u;
+        })
+      );
+    }
+
+    if (isFirebaseConfigured && db) {
       try {
         await setDoc(doc(db, "reports", id), targetReport, { merge: true });
       } catch (e) {
@@ -381,7 +398,7 @@ export const AppProvider = ({ children }) => {
   const addArticle = async (newArticle) => {
     const articleWithId = {
       ...newArticle,
-      id: `edu-${Math.floor(100 + Math.random() * 900)}`
+      id: `edu-${Date.now()}-${Math.floor(Math.random() * 1000)}`
     };
     setArticles((prev) => [...prev, articleWithId]);
 

@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { AppContext } from '../context/AppContext';
 import { QUIZ_QUESTIONS } from '../utils/mockData';
 import { 
-  BookOpen, 
+  
   Award, 
   HelpCircle, 
   Check, 
@@ -79,8 +79,7 @@ const Education = () => {
       setCurrentQuestionIdx(prev => prev + 1);
     } else {
       setQuizFinished(true);
-      const isLastAnswerCorrect = selectedOption === QUIZ_QUESTIONS[currentQuestionIdx].answer;
-      const finalScore = score + (isLastAnswerCorrect ? 1 : 0);
+      const finalScore = score;
       
       if (finalScore === 30) {
         if (!isQuizAlreadyCompleted) {
@@ -538,7 +537,7 @@ const Education = () => {
                           <span>Bonus <strong>+50 Eco-Points</strong> berhasil ditambahkan ke akun Anda!</span>
                         </div>
 
-                        <button className="btn btn-primary btn-block" onClick={() => setQuizFinished(false)} style={{ marginTop: '1.5rem' }}>
+                        <button className="btn btn-primary btn-block" onClick={() => { setQuizFinished(false); setQuizStarted(false); setCurrentQuestionIdx(0); setScore(0); setSelectedOption(null); setIsSubmitted(false); }} style={{ marginTop: '1.5rem' }}>
                           Kembali ke Halaman Edukasi
                         </button>
                       </div>
@@ -557,7 +556,7 @@ const Education = () => {
                           <button className="btn btn-secondary" onClick={handleResetQuiz} style={{ flex: 1 }}>
                             Coba Ulang Kuis
                           </button>
-                          <button className="btn btn-primary" onClick={() => setQuizFinished(false)} style={{ flex: 1 }}>
+                          <button className="btn btn-primary" onClick={() => { setQuizFinished(false); setQuizStarted(false); setCurrentQuestionIdx(0); setScore(0); setSelectedOption(null); setIsSubmitted(false); }} style={{ flex: 1 }}>
                             Selesai
                           </button>
                         </div>

@@ -80,7 +80,7 @@ const Leaderboard = () => {
                   Selamat, {currentUser.name}!
                 </h2>
                 <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '0.2rem 0 0 0' }}>
-                  Anda saat ini berada di peringkat **#{myRank}** di seluruh wilayah desa SmartVillage.
+                  Anda saat ini berada di peringkat <strong>#{myRank}</strong> di seluruh wilayah desa SmartVillage.
                 </p>
               </div>
             </div>
@@ -235,19 +235,19 @@ const Leaderboard = () => {
                 <div>
                   <span className="badge-severity badge-danger" style={{ fontSize: '0.68rem', fontWeight: 800, padding: '0.15rem 0.45rem' }}>Pahlawan Hijau</span>
                   <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.72rem', color: 'var(--text-secondary)', lineHeight: 1.3 }}>
-                    Diberikan kepada warga berdedikasi tinggi dengan kepemilikan poin **250 PTS atau lebih**.
+                    Diberikan kepada warga berdedikasi tinggi dengan kepemilikan poin <strong>250 PTS atau lebih</strong>.
                   </p>
                 </div>
                 <div>
                   <span className="badge-severity badge-warning" style={{ fontSize: '0.68rem', fontWeight: 800, padding: '0.15rem 0.45rem' }}>Pecinta Lingkungan</span>
                   <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.72rem', color: 'var(--text-secondary)', lineHeight: 1.3 }}>
-                    Diberikan kepada warga yang aktif berpartisipasi dengan kepemilikan poin **150 hingga 249 PTS**.
+                    Diberikan kepada warga yang aktif berpartisipasi dengan kepemilikan poin <strong>150 hingga 249 PTS</strong>.
                   </p>
                 </div>
                 <div>
                   <span className="badge-severity badge-info" style={{ fontSize: '0.68rem', fontWeight: 800, padding: '0.15rem 0.45rem' }}>Warga Peduli</span>
                   <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.72rem', color: 'var(--text-secondary)', lineHeight: 1.3 }}>
-                    Status awal keikutsertaan warga desa dengan poin **kurang dari 150 PTS**.
+                    Status awal keikutsertaan warga desa dengan poin <strong>kurang dari 150 PTS</strong>.
                   </p>
                 </div>
               </div>

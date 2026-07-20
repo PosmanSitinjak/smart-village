@@ -4,7 +4,7 @@ import MapView from './MapView';
 import { Camera, MapPin, AlertCircle, Check } from 'lucide-react';
 
 const ReportForm = ({ onCancel, onSuccess }) => {
-  const { addReport, addPoints, currentUser } = useContext(AppContext);
+  const { addReport, currentUser } = useContext(AppContext);
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('Sampah');
   const [description, setDescription] = useState('');
@@ -90,7 +90,7 @@ const ReportForm = ({ onCancel, onSuccess }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
@@ -106,7 +106,7 @@ const ReportForm = ({ onCancel, onSuccess }) => {
       status: 'Menunggu' // Default status is pending
     };
 
-    addReport(reportData);
+    await addReport(reportData);
 
     setIsSuccess(true);
     setTimeout(() => {
@@ -302,7 +302,7 @@ const ReportForm = ({ onCancel, onSuccess }) => {
           </div>
 
           <div className="card-footer form-actions">
-            <button type="button" className="btn btn-secondary" onClick={onCancel}>
+            <button type="button" className="btn btn-secondary" onClick={() => onCancel && onCancel()}>
               Batal
             </button>
             <button type="submit" className="btn btn-primary">

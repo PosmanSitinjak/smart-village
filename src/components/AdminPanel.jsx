@@ -4,20 +4,15 @@ import {
   ShieldAlert, 
   Trash2, 
   Edit3, 
-  CheckSquare, 
-  MessageSquare,
   Search,
-  Filter,
   CheckCircle,
   Clock,
-  Compass,
   AlertCircle,
   Plus,
   FileText,
   Video,
   BookOpen,
-  ArrowLeft,
-  Settings
+  ArrowLeft
 } from 'lucide-react';
 
 const AdminPanel = () => {
@@ -41,7 +36,7 @@ const AdminPanel = () => {
   const [announcementInput, setAnnouncementInput] = useState('');
   const [selectedAnnId, setSelectedAnnId] = useState(null);
 
-  const handleSaveAnnouncement = (e) => {
+  const handleSaveAnnouncement = async (e) => {
     e.preventDefault();
     if (!announcementInput.trim()) {
       alert('Isi pengumuman tidak boleh kosong!');
@@ -49,10 +44,10 @@ const AdminPanel = () => {
     }
 
     if (selectedAnnId) {
-      updateAnnouncement(selectedAnnId, announcementInput);
+      await updateAnnouncement(selectedAnnId, announcementInput);
       alert('Pengumuman berhasil diperbarui!');
     } else {
-      addAnnouncement(announcementInput);
+      await addAnnouncement(announcementInput);
       alert('Pengumuman baru berhasil ditambahkan!');
     }
 
@@ -65,9 +60,9 @@ const AdminPanel = () => {
     setAnnouncementInput(ann.text);
   };
 
-  const handleDeleteAnnClick = (id) => {
+  const handleDeleteAnnClick = async (id) => {
     if (window.confirm('Apakah Anda yakin ingin menghapus pengumuman ini?')) {
-      deleteAnnouncement(id);
+      await deleteAnnouncement(id);
       if (selectedAnnId === id) {
         setSelectedAnnId(null);
         setAnnouncementInput('');
@@ -88,10 +83,10 @@ const AdminPanel = () => {
 
   const filteredReports = reports.filter((rep) => {
     const matchesSearch = 
-      rep.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      rep.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      rep.reporterName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      rep.id.toLowerCase().includes(searchQuery.toLowerCase());
+      (rep.title || '').toLowerCase().includes(searchQuery.toLowerCase()) || 
+      (rep.description || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (rep.reporterName || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (rep.id || '').toLowerCase().includes(searchQuery.toLowerCase());
       
     const matchesStatus = statusFilter === 'Semua' || rep.status === statusFilter;
     return matchesSearch && matchesStatus;
@@ -105,24 +100,24 @@ const AdminPanel = () => {
     setPointsToAward(15);
   };
 
-  const handleSaveUpdate = (e) => {
+  const handleSaveUpdate = async (e) => {
     e.preventDefault();
     if (!selectedReportId) return;
     
-    const awardAmount = (newStatus === 'Selesai' && shouldAwardPoints && !selectedReport.pointsAwarded)
+    const awardAmount = (newStatus === 'Selesai' && shouldAwardPoints && !selectedReport?.pointsAwarded)
       ? Number(pointsToAward)
       : 0;
     
-    updateReportStatus(selectedReportId, newStatus, adminNote, awardAmount);
+    await updateReportStatus(selectedReportId, newStatus, adminNote, awardAmount);
     setSelectedReportId(null);
     setNewStatus('');
     setAdminNote('');
     setShouldAwardPoints(false);
   };
 
-  const handleDeleteClick = (id) => {
+  const handleDeleteClick = async (id) => {
     if (window.confirm(`Apakah Anda yakin ingin menghapus laporan ${id}? Tindakan ini tidak dapat dibatalkan.`)) {
-      deleteReport(id);
+      await deleteReport(id);
       if (selectedReportId === id) {
         setSelectedReportId(null);
       }
@@ -224,7 +219,7 @@ const AdminPanel = () => {
     );
   };
 
-  const handleSaveArticle = (e) => {
+  const handleSaveArticle = async (e) => {
     e.preventDefault();
 
     if (!artTitle.trim() || !artContent.trim() || !artSummary.trim()) {
@@ -261,10 +256,10 @@ const AdminPanel = () => {
     };
 
     if (isAddingNewArticle) {
-      addArticle(payload);
+      await addArticle(payload);
       alert('Artikel baru berhasil ditambahkan!');
     } else {
-      updateArticle(selectedArticleId, payload);
+      await updateArticle(selectedArticleId, payload);
       alert('Artikel berhasil diperbarui!');
     }
 
@@ -272,9 +267,9 @@ const AdminPanel = () => {
     setIsAddingNewArticle(false);
   };
 
-  const handleDeleteArticleClick = (id, title) => {
+  const handleDeleteArticleClick = async (id, title) => {
     if (window.confirm(`Apakah Anda yakin ingin menghapus artikel "${title}"? Kuis terkait artikel ini juga akan terhapus secara permanen.`)) {
-      deleteArticle(id);
+      await deleteArticle(id);
       if (selectedArticleId === id) {
         setSelectedArticleId(null);
       }
@@ -466,10 +461,10 @@ const AdminPanel = () => {
                   <form onSubmit={handleSaveUpdate} className="card-body editor-form">
                     <div className="editor-info-summary">
                       <h4>{selectedReport.title}</h4>
-                      <p className="text-sm">{selectedReport.description.substring(0, 150)}...</p>
+                      <p className="text-sm">{selectedReport.description?.substring(0, 150) || ''}...</p>
                       <div className="editor-reporter-box">
                         <span>Pelapor: <strong>{selectedReport.reporterName}</strong></span>
-                        <span>Urgensi: <strong className={`text-urgency-${selectedReport.severity.toLowerCase()}`}>{selectedReport.severity}</strong></span>
+                        <span>Urgensi: <strong className={`text-urgency-${(selectedReport.severity || 'sedang').toLowerCase()}`}>{selectedReport.severity}</strong></span>
                       </div>
                     </div>
 
@@ -913,9 +908,8 @@ const AdminPanel = () => {
                             placeholder={`Contoh Soal: Apa bahan dasar utama pembuatan bio-enzim?`}
                             value={q.question} 
                             onChange={(e) => {
-                              const updated = [...artQuizQuestions];
-                              updated[idx].question = e.target.value;
-                              setArtQuizQuestions(updated);
+                              const val = e.target.value;
+                              setArtQuizQuestions(prev => prev.map((item, i) => i === idx ? { ...item, question: val } : item));
                             }}
                             required
                             style={{ padding: '0.55rem 0.75rem', borderRadius: '6px', fontSize: '0.85rem' }}
@@ -931,9 +925,8 @@ const AdminPanel = () => {
                               placeholder="Opsi A"
                               value={q.options[0]} 
                               onChange={(e) => {
-                                const updated = [...artQuizQuestions];
-                                updated[idx].options[0] = e.target.value;
-                                setArtQuizQuestions(updated);
+                                const val = e.target.value;
+                                setArtQuizQuestions(prev => prev.map((item, i) => i === idx ? { ...item, options: item.options.map((opt, oIdx) => oIdx === 0 ? val : opt) } : item));
                               }}
                               required
                               style={{ padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.82rem' }}
@@ -947,9 +940,8 @@ const AdminPanel = () => {
                               placeholder="Opsi B"
                               value={q.options[1]} 
                               onChange={(e) => {
-                                const updated = [...artQuizQuestions];
-                                updated[idx].options[1] = e.target.value;
-                                setArtQuizQuestions(updated);
+                                const val = e.target.value;
+                                setArtQuizQuestions(prev => prev.map((item, i) => i === idx ? { ...item, options: item.options.map((opt, oIdx) => oIdx === 1 ? val : opt) } : item));
                               }}
                               required
                               style={{ padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.82rem' }}
@@ -963,9 +955,8 @@ const AdminPanel = () => {
                               placeholder="Opsi C"
                               value={q.options[2]} 
                               onChange={(e) => {
-                                const updated = [...artQuizQuestions];
-                                updated[idx].options[2] = e.target.value;
-                                setArtQuizQuestions(updated);
+                                const val = e.target.value;
+                                setArtQuizQuestions(prev => prev.map((item, i) => i === idx ? { ...item, options: item.options.map((opt, oIdx) => oIdx === 2 ? val : opt) } : item));
                               }}
                               required
                               style={{ padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.82rem' }}
@@ -979,9 +970,8 @@ const AdminPanel = () => {
                               placeholder="Opsi D"
                               value={q.options[3]} 
                               onChange={(e) => {
-                                const updated = [...artQuizQuestions];
-                                updated[idx].options[3] = e.target.value;
-                                setArtQuizQuestions(updated);
+                                const val = e.target.value;
+                                setArtQuizQuestions(prev => prev.map((item, i) => i === idx ? { ...item, options: item.options.map((opt, oIdx) => oIdx === 3 ? val : opt) } : item));
                               }}
                               required
                               style={{ padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.82rem' }}
@@ -996,9 +986,8 @@ const AdminPanel = () => {
                             <select 
                               value={q.answer}
                               onChange={(e) => {
-                                const updated = [...artQuizQuestions];
-                                updated[idx].answer = Number(e.target.value);
-                                setArtQuizQuestions(updated);
+                                const val = Number(e.target.value);
+                                setArtQuizQuestions(prev => prev.map((item, i) => i === idx ? { ...item, answer: val } : item));
                               }}
                               style={{ padding: '0.5rem', borderRadius: '6px', fontSize: '0.8rem', width: '100%', cursor: 'pointer' }}
                             >
@@ -1016,9 +1005,8 @@ const AdminPanel = () => {
                               placeholder="Contoh: Bahan dasarnya adalah sisa buah, sayuran segar, air, dan gula tebu."
                               value={q.explanation} 
                               onChange={(e) => {
-                                const updated = [...artQuizQuestions];
-                                updated[idx].explanation = e.target.value;
-                                setArtQuizQuestions(updated);
+                                const val = e.target.value;
+                                setArtQuizQuestions(prev => prev.map((item, i) => i === idx ? { ...item, explanation: val } : item));
                               }}
                               style={{ padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.8rem' }}
                             />

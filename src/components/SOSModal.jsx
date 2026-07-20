@@ -15,6 +15,8 @@ const SOSModal = ({ isOpen, onClose }) => {
   React.useEffect(() => {
     if (!isOpen) return;
 
+    setIsSubmitted(false);
+    setDescription('');
     setGpsStatus('Melacak koordinat...');
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -44,7 +46,7 @@ const SOSModal = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!description.trim()) return;
 
@@ -63,7 +65,7 @@ const SOSModal = ({ isOpen, onClose }) => {
       photoUrl: ''
     };
 
-    addReport(newReport);
+    await addReport(newReport);
     setIsSubmitted(true);
     setTimeout(() => {
       setIsSubmitted(false);
