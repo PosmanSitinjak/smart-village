@@ -55,7 +55,7 @@ const RoleSelector = () => {
   };
 
   // Handle Citizen (Warga) Registration
-  const handleWargaRegisterSubmit = (e) => {
+  const handleWargaRegisterSubmit = async (e) => {
     e.preventDefault();
     if (!wargaFullName.trim() || !wargaUsername.trim() || !wargaPassword.trim() || !wargaConfirmPassword.trim()) {
       setErrorMsg('Semua kolom pendaftaran wajib diisi');
@@ -67,7 +67,7 @@ const RoleSelector = () => {
       return;
     }
 
-    const res = registerUser(wargaUsername, wargaPassword, wargaFullName);
+    const res = await registerUser(wargaUsername, wargaPassword, wargaFullName);
     if (res.success) {
       setIsSuccess(true);
       setErrorMsg('');
@@ -101,7 +101,7 @@ const RoleSelector = () => {
   };
 
   // Handle saving new password
-  const handleResetSubmit = (e) => {
+  const handleResetSubmit = async (e) => {
     e.preventDefault();
     if (!forgotNewPassword.trim() || !forgotConfirmPassword.trim()) {
       setErrorMsg('Harap isi password baru Anda');
@@ -115,7 +115,7 @@ const RoleSelector = () => {
       setErrorMsg('Konfirmasi password tidak cocok');
       return;
     }
-    const res = resetPassword(forgotUsername.trim(), forgotNewPassword);
+    const res = await resetPassword(forgotUsername.trim(), forgotNewPassword);
     if (res.success) {
       setIsSuccess(true);
       setErrorMsg('');
