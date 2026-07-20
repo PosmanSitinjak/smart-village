@@ -4058,12 +4058,40 @@ body {
   .table-responsive {
     border-radius: 8px;
     border: 1px solid #e2e8f0;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  .admin-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    padding: 0.75rem 0.5rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .admin-table {
+    min-width: 580px !important;
   }
 
   .admin-table th, 
   .admin-table td {
     padding: 0.75rem 0.5rem !important;
     font-size: 0.78rem !important;
+  }
+
+  .editor-form div[style*="gridTemplateColumns"],
+  .admin-editor-card form div[style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  .editor-actions {
+    flex-wrap: wrap !important;
+    width: 100% !important;
   }
 
   /* Form adjustments */
