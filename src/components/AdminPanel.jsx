@@ -673,8 +673,8 @@ const AdminPanel = () => {
                               style={{ width: '65px', height: '42px', borderRadius: '6px', objectFit: 'cover', border: '1px solid #e2e8f0' }}
                             />
                           </td>
-                          <td className="table-title-cell" style={{ maxWidth: '350px' }}>
-                            <strong style={{ display: 'block', fontSize: '0.88rem', color: 'var(--text-primary)' }}>{art.title}</strong>
+                          <td className="table-title-cell" style={{ minWidth: '220px', maxWidth: '380px', whiteSpace: 'normal', wordBreak: 'break-word' }}>
+                            <strong style={{ display: 'block', fontSize: '0.88rem', color: 'var(--text-primary)', lineHeight: '1.4' }}>{art.title}</strong>
                             <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>ID: {art.id}</span>
                           </td>
                           <td>

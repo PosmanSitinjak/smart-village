@@ -3866,6 +3866,15 @@ body {
     gap: 0.85rem !important;
   }
 
+  .admin-table-header button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .admin-table {
+    min-width: 720px !important;
+  }
+
   .admin-table-controls {
     flex-direction: column !important;
     align-items: stretch !important;
@@ -4075,7 +4084,7 @@ body {
   }
 
   .admin-table {
-    min-width: 580px !important;
+    min-width: 720px !important;
   }
 
   .admin-table th, 
