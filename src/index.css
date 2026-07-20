@@ -542,7 +542,7 @@ body {
   align-items: center;
   gap: 0;
   white-space: nowrap;
-  animation: tickerScroll 45s linear infinite;
+  animation: tickerScroll 15s linear infinite;
 }
 
 .ticker-track:hover {
