@@ -128,12 +128,22 @@ export const AppProvider = ({ children }) => {
 
     // Realtime Users Listener
     const unsubUsers = onSnapshot(collection(db, "users"), (snapshot) => {
+      let list = [];
       if (!snapshot.empty) {
-        const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setUsers(list);
-      } else {
-        setUsers([]);
+        list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       }
+      
+      // Always ensure DEFAULT_USERS (e.g. budi) exist
+      const merged = [...list];
+      DEFAULT_USERS.forEach(defUser => {
+        if (!merged.some(u => u.username.toLowerCase() === defUser.username.toLowerCase())) {
+          merged.push(defUser);
+          if (isFirebaseConfigured && db) {
+            setDoc(doc(db, "users", defUser.username.toLowerCase()), defUser).catch(console.error);
+          }
+        }
+      });
+      setUsers(merged);
     }, (err) => console.error("Firestore users listener error:", err));
 
     // Realtime Articles Listener
@@ -282,8 +292,10 @@ export const AppProvider = ({ children }) => {
 
   // Login a citizen
   const loginUser = (username, password) => {
+    const cleanUser = (username || '').trim().toLowerCase();
+    const cleanPass = (password || '').trim();
     const user = users.find(
-      u => u.username.toLowerCase() === username.toLowerCase() && u.password === password
+      u => u.username.toLowerCase() === cleanUser && u.password === cleanPass
     );
 
     if (user) {
