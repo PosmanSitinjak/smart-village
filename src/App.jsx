@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { AppProvider, AppContext } from './context/AppContext';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
@@ -39,6 +39,15 @@ const MainAppContent = () => {
   } = useContext(AppContext);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Auto scroll to top when logging in, switching tabs, or opening/closing auth modal
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    const mainContentEl = document.querySelector('.main-content');
+    if (mainContentEl) {
+      mainContentEl.scrollTop = 0;
+    }
+  }, [activeTab, currentUser, userRole, isAuthModalOpen]);
 
   const renderActiveView = () => {
     switch (activeTab) {
