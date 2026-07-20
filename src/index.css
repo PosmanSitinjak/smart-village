@@ -3406,6 +3406,24 @@ body {
 .pin-blue { background-color: #3b82f6 !important; }
 .pulse-blue { background-color: var(--blue-pulse) !important; }
 
+/* Leaflet Map Hardware Acceleration & Rounded Corner Clipping Fix */
+.map-view-wrapper,
+.leaflet-container {
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  -webkit-mask-image: -webkit-radial-gradient(white, black) !important;
+  background-color: #f1f5f9 !important;
+}
+
+.leaflet-pane,
+.leaflet-tile-pane,
+.leaflet-tile-container,
+.leaflet-layer {
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
 /* Map popups matching the dark glass theme */
 .leaflet-popup-content-wrapper {
   background-color: var(--bg-dark) !important;

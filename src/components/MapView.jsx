@@ -209,13 +209,15 @@ const MapView = ({
       borderRadius: "16px", 
       overflow: "hidden", 
       border: "1px solid rgba(0,0,0,0.08)",
-      position: 'relative'
+      position: 'relative',
+      isolation: 'isolate',
+      WebkitMaskImage: '-webkit-radial-gradient(white, black)'
     }}>
       <MapContainer 
         center={activeCenter} 
         zoom={zoom} 
         scrollWheelZoom={true} 
-        style={{ height: "100%", width: "100%" }}
+        style={{ height: "100%", width: "100%", borderRadius: "16px", overflow: "hidden", background: "#f1f5f9" }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
