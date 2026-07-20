@@ -304,9 +304,9 @@ const AdminPanel = () => {
       summary: artSummary,
       image: artImage || 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=600&auto=format&fit=crop&q=60',
       content: artContent,
-      youtubeId: artYoutubeId || undefined,
-      sourceLabel: artSourceLabel || undefined,
-      sourceUrl: artSourceUrl || undefined,
+      youtubeId: artYoutubeId ? artYoutubeId.trim() : "",
+      sourceLabel: artSourceLabel ? artSourceLabel.trim() : "",
+      sourceUrl: artSourceUrl ? artSourceUrl.trim() : "",
       quizQuestions: artQuizQuestions
     };
 
@@ -1273,7 +1273,7 @@ const AdminPanel = () => {
                 </thead>
                 <tbody>
                   {users
-                    .filter(u => !userSearchQuery || u.name.toLowerCase().includes(userSearchQuery.toLowerCase()) || u.username.toLowerCase().includes(userSearchQuery.toLowerCase()))
+                    .filter(u => !userSearchQuery || (u.name || '').toLowerCase().includes(userSearchQuery.toLowerCase()) || (u.username || '').toLowerCase().includes(userSearchQuery.toLowerCase()))
                     .map((u) => {
                       const isPasswordVisible = showPasswordMap[u.username];
                       return (
