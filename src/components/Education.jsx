@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AppContext } from '../context/AppContext';
-import { QUIZ_QUESTIONS } from '../utils/mockData';
+import { QUIZ_QUESTIONS, EDUCATION_ARTICLES } from '../utils/mockData';
 import { 
   
   Award, 
@@ -455,7 +455,7 @@ const Education = () => {
               <h2 className="section-title">Artikel Pilihan</h2>
               
               <div className="articles-list-grid">
-                {articles.map((art) => (
+                {((articles && articles.length > 0) ? articles : EDUCATION_ARTICLES).map((art) => (
                   <div 
                     key={art.id} 
                     className="article-card card hover-lift"

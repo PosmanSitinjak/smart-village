@@ -148,12 +148,22 @@ export const AppProvider = ({ children }) => {
 
     // Realtime Articles Listener
     const unsubArticles = onSnapshot(collection(db, "articles"), (snapshot) => {
+      let list = [];
       if (!snapshot.empty) {
-        const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setArticles(list);
-      } else {
-        setArticles([]);
+        list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       }
+      
+      // Always ensure DEFAULT_ARTICLES (EDUCATION_ARTICLES) exist
+      const merged = [...list];
+      EDUCATION_ARTICLES.forEach(defArt => {
+        if (!merged.some(a => a.id === defArt.id)) {
+          merged.push(defArt);
+          if (isFirebaseConfigured && db) {
+            setDoc(doc(db, "articles", defArt.id), defArt).catch(console.error);
+          }
+        }
+      });
+      setArticles(merged);
     }, (err) => console.error("Firestore articles listener error:", err));
 
     return () => {
