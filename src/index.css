@@ -3864,6 +3864,19 @@ body {
     flex-direction: column !important;
     align-items: stretch !important;
     gap: 0.85rem !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .card-header h2,
+  .admin-table-header h2 {
+    font-size: 1.05rem !important;
+    line-height: 1.35 !important;
+    max-width: 100% !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
   }
 
   .admin-table-header button {

@@ -625,7 +625,7 @@ const AdminPanel = () => {
                 borderBottom: '1px solid #f1f5f9'
               }}>
                 <div>
-                  <h2 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Daftar Artikel Edukasi Warga</h2>
+                  <h2 style={{ fontSize: '1.25rem', fontWeight: 800, wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%' }}>Daftar Artikel Edukasi Warga</h2>
                   <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: '0.15rem 0 0 0' }}>
                     Kelola materi bacaan, video penjelas YouTube, dan 5 soal kuis pendamping untuk masing-masing artikel.
                   </p>
@@ -1238,8 +1238,8 @@ const AdminPanel = () => {
           
           <div className="card-header admin-table-header" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '1rem', marginBottom: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Users size={22} className="text-emerald" /> Kelola Basis Data Akun Warga Terdaftar ({users ? users.length : 0})
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.5rem', wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', flexWrap: 'wrap' }}>
+                <Users size={22} className="text-emerald" style={{ flexShrink: 0 }} /> Kelola Basis Data Akun Warga Terdaftar ({users ? users.length : 0})
               </h2>
               <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '0.2rem 0 0 0' }}>
                 Staf Desa memiliki wewenang untuk mengubah nama, jumlah poin, dan kata sandi, serta menghapus akun warga desa.
