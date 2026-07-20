@@ -277,7 +277,7 @@ const ReportForm = ({ onCancel, onSuccess }) => {
                   <MapView 
                     interactive={true} 
                     onLocationSelect={handleLocationSelect} 
-                    selectedLocation={latitude && longitude ? { lat: latitude, lng: longitude } : null}
+                    selectedLocation={(latitude !== null && latitude !== undefined && longitude !== null && longitude !== undefined) ? { lat: Number(latitude), lng: Number(longitude) } : null}
                     center={mapCenter}
                     height="280px"
                   />
@@ -285,15 +285,15 @@ const ReportForm = ({ onCancel, onSuccess }) => {
                 {errors.location && <span className="error-msg"><AlertCircle size={12} /> {errors.location}</span>}
 
                 {/* Lat/Lng display boxes */}
-                {latitude && longitude && (
+                {(latitude !== null && latitude !== undefined && longitude !== null && longitude !== undefined) && (
                   <div className="coords-display">
                     <div className="coord-box">
                       <span>Latitude</span>
-                      <strong>{latitude.toFixed(6)}</strong>
+                      <strong>{Number(latitude).toFixed(6)}</strong>
                     </div>
                     <div className="coord-box">
                       <span>Longitude</span>
-                      <strong>{longitude.toFixed(6)}</strong>
+                      <strong>{Number(longitude).toFixed(6)}</strong>
                     </div>
                   </div>
                 )}

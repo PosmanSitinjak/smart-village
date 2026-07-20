@@ -31,8 +31,9 @@ const Education = () => {
   const [score, setScore] = useState(0);
   const [quizFinished, setQuizFinished] = useState(false);
 
-  const isQuizAlreadyCompleted = completedQuizzes.includes('quiz_lingkungan_1');
-  const isQuizPassed = completedQuizzes.includes('quiz_lingkungan_1') || completedQuizzes.includes('quiz_lingkungan_1_passed');
+  const safeCompletedQuizzes = completedQuizzes || [];
+  const isQuizAlreadyCompleted = safeCompletedQuizzes.includes('quiz_lingkungan_1');
+  const isQuizPassed = safeCompletedQuizzes.includes('quiz_lingkungan_1') || safeCompletedQuizzes.includes('quiz_lingkungan_1_passed');
 
   // Mini-Quiz inside Article states
   const [artQuizAnswers, setArtQuizAnswers] = useState({});

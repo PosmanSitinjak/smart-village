@@ -12,11 +12,11 @@ const Leaderboard = () => {
   const { users, currentUser, userPoints, openAuthModal } = useContext(AppContext);
 
   // Sort users by points descending
-  const sortedUsers = [...users].sort((a, b) => b.points - a.points);
+  const sortedUsers = [...(users || [])].sort((a, b) => (b.points || 0) - (a.points || 0));
 
   // Find current user's rank
-  const myRank = currentUser 
-    ? sortedUsers.findIndex(u => u.username === currentUser.username) + 1 
+  const myRank = (currentUser && currentUser.username) 
+    ? sortedUsers.findIndex(u => u?.username?.toLowerCase() === currentUser.username.toLowerCase()) + 1 
     : null;
 
   const getUserBadgeText = (points) => {

@@ -203,7 +203,7 @@ export const AppProvider = ({ children }) => {
 
   // Announcements CRUD functions
   const addAnnouncement = async (text) => {
-    if (!text.trim()) return;
+    if (!text || !text.trim()) return;
     const newAnn = {
       id: `ann-${Date.now()}`,
       text: text.trim()
@@ -220,7 +220,7 @@ export const AppProvider = ({ children }) => {
   };
 
   const updateAnnouncement = async (id, text) => {
-    if (!text.trim()) return;
+    if (!text || !text.trim()) return;
     setAnnouncements(prev => 
       prev.map(ann => ann.id === id ? { ...ann, text: text.trim() } : ann)
     );
@@ -363,7 +363,7 @@ export const AppProvider = ({ children }) => {
 
   // Login an admin
   const loginAdmin = (pin) => {
-    if (pin.toLowerCase() === 'admin') {
+    if ((pin || '').trim().toLowerCase() === 'admin') {
       setUserRole('admin');
       setActiveTab('admin_reports');
       setIsAuthModalOpen(false);
@@ -521,17 +521,18 @@ export const AppProvider = ({ children }) => {
   // Mark quiz as completed for active user
   const markQuizCompleted = async (quizId) => {
     if (!currentUser) return;
-    if (!currentUser.completedQuizzes.includes(quizId)) {
+    const completedList = currentUser.completedQuizzes || [];
+    if (!completedList.includes(quizId)) {
       const updatedUser = { 
         ...currentUser, 
-        completedQuizzes: [...currentUser.completedQuizzes, quizId] 
+        completedQuizzes: [...completedList, quizId] 
       };
       setCurrentUser(updatedUser);
-      setUsers(prev => prev.map(u => u.username === currentUser.username ? updatedUser : u));
+      setUsers(prev => prev.map(u => u.username.toLowerCase() === currentUser.username.toLowerCase() ? updatedUser : u));
 
       if (isFirebaseConfigured && db) {
         try {
-          await updateDoc(doc(db, "users", currentUser.username), { completedQuizzes: updatedUser.completedQuizzes });
+          await updateDoc(doc(db, "users", currentUser.username.toLowerCase()), { completedQuizzes: updatedUser.completedQuizzes });
         } catch (e) {
           console.error("Failed to mark quiz completed in Firebase:", e);
         }

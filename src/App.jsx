@@ -43,7 +43,7 @@ const MainAppContent = () => {
   // Auto scroll to top when logging in, switching tabs, or opening/closing auth modal
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-    const mainContentEl = document.querySelector('.main-content');
+    const mainContentEl = document.querySelector('.app-main-content') || document.querySelector('.main-content');
     if (mainContentEl) {
       mainContentEl.scrollTop = 0;
     }
